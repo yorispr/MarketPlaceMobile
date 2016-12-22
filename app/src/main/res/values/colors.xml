@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#f3910d</color>
     <color name="colorPrimaryDark">#e15e00</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#f3910d</color>
     <color name="viewBg">#f1f5f8</color>
     <color name="album_title">#4c4c4c</color>
 </resources>

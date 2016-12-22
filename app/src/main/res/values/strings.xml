@@ -3,4 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_show_categories">ShowCategoriesActivity</string>
     <string name="title_activity_detail_product">DetailProductActivity</string>
+    <string name="title_activity_search_flight">SearchFlightActivity</string>
+    <string name="title_activity_search_result">SearchResultActivity</string>
 </resources>

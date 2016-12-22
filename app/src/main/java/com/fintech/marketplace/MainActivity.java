@@ -1,5 +1,6 @@
 package com.fintech.marketplace;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.fintech.marketplace.Flight.SearchFlightActivity;
 import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
 
 import org.json.JSONArray;
@@ -144,8 +146,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         }
     }
 
-    public void InitUINavTabBar()
-    {
+    public void InitUINavTabBar() {
         final String[] colors = getResources().getStringArray(R.array.default_preview);
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
@@ -172,6 +173,8 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
                     case 0 :
                         break;
                     case 1 :
+                        Intent i = new Intent(MainActivity.this, SearchFlightActivity.class);
+                        startActivity(i);
                         break;
                 }
             }

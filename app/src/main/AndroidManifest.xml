@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".Flight.SearchFlightActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -24,6 +24,14 @@
         <activity
             android:name=".DetailProductActivity"
             android:label="@string/title_activity_detail_product"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_search_flight"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Flight.SearchResultActivity"
+            android:label="@string/title_activity_search_result"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

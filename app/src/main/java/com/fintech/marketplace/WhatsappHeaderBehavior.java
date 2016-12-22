@@ -27,6 +27,7 @@ public class WhatsappHeaderBehavior extends CoordinatorLayout.Behavior<HeaderVie
     public WhatsappHeaderBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
+
     }
 
     public WhatsappHeaderBehavior(Context context, AttributeSet attrs, Context mContext) {
