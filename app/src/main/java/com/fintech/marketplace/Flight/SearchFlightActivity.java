@@ -129,11 +129,14 @@ public class SearchFlightActivity extends AppCompatActivity {
             }
         });
 
-        //if(!sessionManager.isLoggedIn()) {
+        if(!sessionManager.isLoggedIn()) {
             JSONRequest("https://api-sandbox.tiket.com/apiv1/payexpress?method=getToken&secretkey=56c8624d6a62e1ab22f0d9915ff2d43c&output=json", true, false, false);
-        //}
-        String url = "https://api-sandbox.tiket.com/flight_api/all_airport?token="+ sessionManager.GetToken() +"&output=json";
-        JSONRequest(url,false,false,true);
+        }else{
+            String url = "https://api-sandbox.tiket.com/flight_api/all_airport?token="+ sessionManager.GetToken() +"&output=json";
+            JSONRequest(url,false,false,true);
+        }
+
+
         btnSearch = (Button)findViewById(R.id.btnCari);
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -165,6 +168,8 @@ public class SearchFlightActivity extends AppCompatActivity {
                             if (isGetToken) {
                                 Log.d("token",response.getString("token"));
                                 sessionManager.createLoginSession("Yoris", "yoris@gmail.com", response.getString("token"));
+                                String url = "https://api-sandbox.tiket.com/flight_api/all_airport?token="+ sessionManager.GetToken() +"&output=json";
+                                JSONRequest(url,false,false,true);
                             }
                             if(isSearchFlight){
                                 Log.d("flight",response.toString());
