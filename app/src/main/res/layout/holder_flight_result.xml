@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/border"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:text="Maskapai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="13dp"
+            android:id="@+id/txtMaskapai"
+            android:textStyle="normal|bold"
+            android:textSize="16sp"
+            android:textColor="#000000" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:srcCompat="@android:drawable/ic_delete"
+            android:id="@+id/imgLogoMaskapai"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="3dp"
+            android:layout_toRightOf="@+id/txtMaskapai"
+            android:layout_above="@+id/textView23"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:text="Rp. "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView19"
+            android:layout_toRightOf="@+id/imgLogoMaskapai"
+            android:layout_toLeftOf="@+id/txtHarga"
+            android:layout_toStartOf="@+id/txtHarga"
+            android:layout_below="@+id/txtLangsung"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_alignBottom="@+id/txtHarga" />
+
+        <TextView
+            android:text="N/A"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:id="@+id/txtLangsung"
+            android:layout_marginTop="5dp"
+            android:layout_alignRight="@+id/txtHarga"
+            android:layout_alignEnd="@+id/txtHarga"
+            android:layout_alignLeft="@+id/textView19"
+            android:layout_alignStart="@+id/textView19"
+            android:gravity="right" />
+
+        <TextView
+            android:text="00:00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtJamBerangkat"
+            android:layout_below="@+id/txtMaskapai"
+            android:layout_alignLeft="@+id/txtMaskapai"
+            android:layout_alignStart="@+id/txtMaskapai"
+            android:layout_marginTop="13dp" />
+
+        <TextView
+            android:text="-"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/txtJamBerangkat"
+            android:id="@+id/textView23"
+            android:layout_toRightOf="@+id/txtJamBerangkat"
+            android:textAlignment="center"
+            android:layout_alignBottom="@+id/txtJamBerangkat"
+            android:textSize="14sp"
+            android:textStyle="normal|bold"
+            android:textAllCaps="true" />
+
+        <TextView
+            android:text="00:00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtJamTiba"
+            android:layout_alignBottom="@+id/textView23"
+            android:layout_toRightOf="@+id/textView23"
+            android:layout_toEndOf="@+id/textView23"
+            android:layout_below="@+id/imgLogoMaskapai" />
+
+        <TextView
+            android:text="0j 40m"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtDurasi"
+            android:layout_marginTop="11dp"
+            android:layout_below="@+id/txtJamBerangkat"
+            android:layout_alignLeft="@+id/txtJamBerangkat"
+            android:layout_alignStart="@+id/txtJamBerangkat"
+            android:layout_marginBottom="7dp" />
+
+        <TextView
+            android:text="999.999"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtHarga"
+            android:layout_marginRight="11dp"
+            android:layout_marginEnd="11dp"
+            android:gravity="center"
+            android:textStyle="normal|bold"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@+id/txtDurasi"
+            android:layout_below="@+id/txtLangsung" />
+
+    </RelativeLayout>
+</LinearLayout>

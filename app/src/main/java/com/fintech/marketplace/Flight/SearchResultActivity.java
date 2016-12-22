@@ -26,10 +26,11 @@ import java.util.Locale;
 public class SearchResultActivity extends AppCompatActivity {
 
     private ArrayList<FlightResultModel>flighresultList = new ArrayList<>();
-    private ArrayList<String>flighresultList_test = new ArrayList<>();
 
     private ListView listResult;
-    private ArrayAdapter<String> adapterpenerbangan;
+
+    FlightResultAdapter flight_adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +40,11 @@ public class SearchResultActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });fab.hide();
+
         listResult = (ListView)findViewById(R.id.listPenerbangan);
-        adapterpenerbangan= new ArrayAdapter<String>(SearchResultActivity.this, android.R.layout.simple_list_item_1,flighresultList_test);
-        listResult.setAdapter(adapterpenerbangan);
+
+        flight_adapter = new FlightResultAdapter(this,R.layout.holder_flight_result,flighresultList);
+        listResult.setAdapter(flight_adapter);
 
         convertToJson(getIntent().getStringExtra("json"));
     }
@@ -64,9 +59,9 @@ public class SearchResultActivity extends AppCompatActivity {
 
             JSONObject arrobj = search_queries.getJSONObject("arr_airport");
             String to = arrobj.getString("short_name");
-
             String tgl = search_queries.getString("date");
-            getSupportActionBar().setTitle(from + " -> " +to);
+
+            getSupportActionBar().setTitle(from + " \u2192 " +to);
 
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -77,6 +72,7 @@ public class SearchResultActivity extends AppCompatActivity {
             JSONObject flight = resobj.getJSONObject("departures");
             JSONArray flightarray = flight.getJSONArray("result");
 
+            Log.d("Jumlah",String.valueOf(flightarray.length()));
             for(int i = 0 ; i<flightarray.length() ; i++){
                 JSONObject fl = flightarray.getJSONObject(i);
                 FlightResultModel fr = new FlightResultModel();
@@ -84,10 +80,12 @@ public class SearchResultActivity extends AppCompatActivity {
                 fr.setPrice_value(fl.getDouble("price_value"));
                 fr.setSimple_arrival_time(fl.getString("simple_arrival_time"));
                 fr.setSimple_departure_time(fl.getString("simple_departure_time"));
-                flighresultList_test.add(fr.getAirlines_name() + ", "+fr.getPrice_value() +"\nBerangkat : "+fr.getSimple_departure_time()+"\nTiba : "+fr.getSimple_arrival_time());
-
+                fr.setDuration(fl.getString("duration"));
+                fr.setStop(fl.getString("stop"));
+                fr.setImage(fl.getString("image"));
+                flighresultList.add(fr);
             }
-            adapterpenerbangan.notifyDataSetChanged();
+            flight_adapter.notifyDataSetChanged();
 
         }catch(JSONException je){
             je.printStackTrace();

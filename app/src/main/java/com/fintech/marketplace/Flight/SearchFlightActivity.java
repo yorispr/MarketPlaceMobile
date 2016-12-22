@@ -1,10 +1,12 @@
 package com.fintech.marketplace.Flight;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,6 +43,7 @@ public class SearchFlightActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormatter;
     private boolean isTujuan=false, isAsal=false, isTglKembali=false, isRoundTrip = false;
 
+    URL APIurl;
     private TextView txtTgl,txtTglKembali;
     SessionManager sessionManager ;
 
@@ -54,6 +59,7 @@ public class SearchFlightActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
 
     private Button btnSearch;
+    private ImageView imageReverse;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,14 +67,7 @@ public class SearchFlightActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });fab.hide();
+        APIurl = new URL();
 
         sessionManager = new SessionManager(SearchFlightActivity.this);
 
@@ -94,10 +93,26 @@ public class SearchFlightActivity extends AppCompatActivity {
                     isRoundTrip = false;
                     layouttglkembali.setVisibility(View.GONE);
                 }else if(checkedId == R.id.radioPulangPergi){
+                    new AlertDialog.Builder(SearchFlightActivity.this)
+                            .setTitle("Pemberitahuan")
+                            .setMessage("Untuk sementara fitur ini belum dapat digunakan.")
+                            .setNegativeButton("Tutup", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                    //dialog.dismiss();
+                                }
+                            })
+                            .setIcon(R.drawable.ic_action_warning_dark)
+                            .show();
+
+                    radioGroup.check(R.id.radioSkaliJalan);
+
+                    /*
                     isRoundTrip = true;
                     layouttglkembali.setVisibility(View.VISIBLE);
                     txtTglKembali.setText(txtTgl.getText().toString());
                     tgl_kembali = tgl_keberangkatan;
+                    */
                 }
                 else{
                     isRoundTrip = false;
@@ -107,6 +122,8 @@ public class SearchFlightActivity extends AppCompatActivity {
 
         txtTgl = (TextView)findViewById(R.id.txtTgl);
         txtTglKembali = (TextView)findViewById(R.id.txtTglKembali);
+        imageReverse = (ImageView)findViewById(R.id.imgReverse);
+
 
         txtTgl.setText(ToIdDate(newDate));
 
@@ -130,9 +147,10 @@ public class SearchFlightActivity extends AppCompatActivity {
         });
 
         if(!sessionManager.isLoggedIn()) {
-            JSONRequest("https://api-sandbox.tiket.com/apiv1/payexpress?method=getToken&secretkey=56c8624d6a62e1ab22f0d9915ff2d43c&output=json", true, false, false);
+            String requrl = APIurl.getToken() + "&secretkey="+"56c8624d6a62e1ab22f0d9915ff2d43c"+"&output=json";
+            JSONRequest(requrl, true, false, false);
         }else{
-            String url = "https://api-sandbox.tiket.com/flight_api/all_airport?token="+ sessionManager.GetToken() +"&output=json";
+            String url = APIurl.getAllAirport() + sessionManager.GetToken() +"&output=json";
             JSONRequest(url,false,false,true);
         }
 
@@ -146,10 +164,12 @@ public class SearchFlightActivity extends AppCompatActivity {
                 String tujuan = spinTujuan.getSelectedItem().toString().substring(spinTujuan.getSelectedItem().toString().indexOf("(")+1,spinTujuan.getSelectedItem().toString().indexOf(")"));
                 String url = "";
                 if(isRoundTrip){
-                    url = "http://api-sandbox.tiket.com/search/flight?d="+asal+"&a="+tujuan+"&date="+tgl_keberangkatan+"&ret_date="+tgl_kembali+"&adult=1&child=0&infant=0&token="+sessionManager.GetToken()+"&output=json";
+                    //url = "http://api-sandbox.tiket.com/search/flight?d="+asal+"&a="+tujuan+"&date="+tgl_keberangkatan+"&ret_date="+tgl_kembali+"&adult=1&child=0&infant=0&token="+sessionManager.GetToken()+"&output=json";
+                    url = APIurl.getSearchFlight()+"d="+"CGK"+"&a="+"DPS"+"&date="+tgl_keberangkatan+"&ret_date="+tgl_kembali+"&adult=1&child=0&infant=0&token="+sessionManager.GetToken()+"&v=3&output=json";
+
                 }else{
                     //url = "http://api-sandbox.tiket.com/search/flight?d="+asal+"&a="+tujuan+"&date="+tgl_keberangkatan+"&adult=1&child=0&infant=0&token="+sessionManager.GetToken()+"&v=3&output=json";
-                    url = "http://api-sandbox.tiket.com/search/flight?d="+"CGK"+"&a="+"DPS"+"&date="+tgl_keberangkatan+"&adult=1&child=0&infant=0&token="+sessionManager.GetToken()+"&v=3&&output=json";
+                    url = APIurl.getSearchFlight()+"d="+"CGK"+"&a="+"DPS"+"&date="+tgl_keberangkatan+"&adult=1&child=0&infant=0&token="+sessionManager.GetToken()+"&v=3&&output=json";
                 }
 
                 JSONRequest(url,false,true,false);
@@ -168,14 +188,14 @@ public class SearchFlightActivity extends AppCompatActivity {
                             if (isGetToken) {
                                 Log.d("token",response.getString("token"));
                                 sessionManager.createLoginSession("Yoris", "yoris@gmail.com", response.getString("token"));
-                                String url = "https://api-sandbox.tiket.com/flight_api/all_airport?token="+ sessionManager.GetToken() +"&output=json";
+                                String url = APIurl.getAllAirport() + sessionManager.GetToken() +"&output=json";
                                 JSONRequest(url,false,false,true);
                             }
                             if(isSearchFlight){
                                 Log.d("flight",response.toString());
                                 Intent i = new Intent(SearchFlightActivity.this,SearchResultActivity.class);
                                 i.putExtra("json",response.toString());
-
+                                //convertToJson(response);
                                 startActivity(i);
                             }
                             if(isGetAirport){
@@ -193,6 +213,19 @@ public class SearchFlightActivity extends AppCompatActivity {
                                     AirportList_test.add(apmodel.getLocation_name()+" ("+apmodel.getAirport_code()+")");
                                 }
                                 SpinnerAdapter.notifyDataSetChanged();
+
+                                imageReverse.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        int posasal=0, postujuan=0;
+                                        posasal = spinAsal.getSelectedItemPosition();
+                                        postujuan = spinTujuan.getSelectedItemPosition();
+                                        spinAsal.setSelection(postujuan);
+                                        spinTujuan.setSelection(posasal);
+
+                                    }
+                                });
+
                                 Log.d("JSONRequest", response.toString());
 
                             }
@@ -238,4 +271,48 @@ public class SearchFlightActivity extends AppCompatActivity {
 
         return date;
     }
+
+    private void convertToJson(JSONObject json){
+        try {
+            JSONObject search_queries = json.getJSONObject("go_det");
+
+            JSONObject depobj = search_queries.getJSONObject("dep_airport");
+            String from = depobj.getString("short_name");
+
+            JSONObject arrobj = search_queries.getJSONObject("arr_airport");
+            String to = arrobj.getString("short_name");
+
+            String tgl = search_queries.getString("date");
+            getSupportActionBar().setTitle(from + " -> " +to);
+
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            cal.setTime(sdf.parse(tgl));// all done
+
+            getSupportActionBar().setSubtitle(ToIdDate(cal));
+
+            JSONObject flight = json.getJSONObject("departures");
+            JSONArray flightarray = flight.getJSONArray("result");
+
+            Log.d("Jumlah",String.valueOf(flightarray.length()));
+            for(int i = 0 ; i<flightarray.length() ; i++){
+                JSONObject fl = flightarray.getJSONObject(i);
+                FlightResultModel fr = new FlightResultModel();
+                fr.setAirlines_name(fl.getString("airlines_name"));
+                fr.setPrice_value(fl.getDouble("price_value"));
+                fr.setSimple_arrival_time(fl.getString("simple_arrival_time"));
+                fr.setSimple_departure_time(fl.getString("simple_departure_time"));
+                fr.setDuration(fl.getString("duration"));
+                fr.setStop(fl.getString("stop"));
+                fr.setImage(fl.getString("image"));
+                //flighresultList_test.add(fr.getAirlines_name() + ", "+fr.getPrice_value() +"\nBerangkat : "+fr.getSimple_departure_time()+"\nTiba : "+fr.getSimple_arrival_time());
+            }
+
+        }catch(JSONException je){
+            je.printStackTrace();
+        }
+        catch(ParseException de){de.printStackTrace();}
+
+    }
+
 }
